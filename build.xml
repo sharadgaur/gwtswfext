@@ -1,0 +1,67 @@
+<project name="Gwt SwfUpload Ext" default="build" basedir=".">
+<description>GwtSwfExt (Beta v1)</description>
+	<property name="project.home" value="." />
+	<property name="project.build" value="${project.home}/build" />
+	<property name="project.lib" value="${project.home}/lib" />
+	<property name="project.src" value="${project.home}/src" />
+	<path id="classpath">
+				<fileset dir="${project.lib}">
+					<include name="**/*.jar"/>
+				</fileset>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${project.build}" />
+		<delete dir="${project.home}/distribution"/>
+	</target>
+	<target name="init" depends="clean">
+		<tstamp />
+		<mkdir dir="${project.build}" />
+		<mkdir dir="${project.home}/distribution"/>
+	</target>
+	
+	<target name="compile" depends="init">
+			<javac  destdir="${project.build}" includes="**/*.*" srcdir="${project.src}"  debug="on" source="1.5" target="1.5">
+				<classpath refid="classpath" />
+						
+			</javac>
+		<copy filtering="true" overwrite="yes" todir="${project.build}/">
+					<fileset dir="${project.src}">
+								<include name="**/*.*"/>
+					</fileset>
+		</copy>
+		
+	</target>
+	
+	<target name="jar" depends="compile">
+			<jar destfile="${project.home}/distribution/gwtswfext.jar" >
+			            <manifest>
+			                <section name="Gwt SWFUpload Ext">
+			                    <attribute name="Specification-Title" value="GwtSwfExt" />
+			                    <attribute name="Developer-Name" value="Sharad Gaur" />
+			                </section>
+			            </manifest>
+						<fileset dir="${project.build}"/>
+			</jar>		
+	</target>
+	<target name="Backup" >
+			<tstamp>
+					    <format property="now" pattern="MM-dd-yyyy" locale="en,UK"/>
+					  </tstamp>
+					<mkdir dir="W:/Sharad/New UI/${now}/gwt_swf" />
+
+			<copy  filtering="true" overwrite="yes"  todir="W:/Sharad/New UI/${now}/sgw_swf" >
+							<fileset dir="${project.home}">
+								<exclude name="build"/>
+								<exclude name=".settings"/>
+								<exclude name=".gwt-cache"/>
+								<exclude name="DB"/>
+								<exclude name="distribution"/>
+								<exclude name="scripts"/>
+								<exclude name="tomcat"/>
+							</fileset>
+			</copy>
+			
+	</target>
+	<target name="build" depends="jar"/>
+</project>
